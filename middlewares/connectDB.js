@@ -13,7 +13,7 @@ import mongoose from 'mongoose';
 /**
  * Creates connection to database
  * @function
- * 
+ * @returns {void}
  */
 const connectDB = () => {
 

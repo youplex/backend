@@ -10,7 +10,7 @@ import connectDB from './middlewares/connectDB.js';
 dotenv.config();
 
 /**
- * @const {String} - Port on which the server runs
+ * @constant {String} - Port on which the server runs
  */
 const PORT = process.env.PORT || 5000;
 

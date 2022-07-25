@@ -2,28 +2,39 @@
  * 
  * @module models/User
  * @requires mongoose
- * @requires bcrypt
  * 
  */
 import mongoose from 'mongoose';
 
 /**
- * @class User
+ * User structure
+ * @typedef {Object} User
+ * @property {string} name Name of the user
+ * @property {string} email Email id of the user
+ * @property {URL} [image] user's profile image url
+ * @property {string} [googleToken] google generated refresh token 
+ */
+
+
+/**
+ * User Schema
+ * @constructor User
  */
 const userSchema = new mongoose.Schema({
     name: {
-        type: String,
-        required: true
+        type: String
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     image: {
         type: String,
     },
-    refreshToken: {
+    googleToken : {
         type: String,
+        required: true
     }
 }, { timestamps: true });
 
