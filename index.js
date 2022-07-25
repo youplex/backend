@@ -7,6 +7,8 @@ import express from "express";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './middlewares/connectDB.js';
+import { swaggerSpec } from './middlewares/swagger.js';
+import swaggerUi from 'swagger-ui-express';
 dotenv.config();
 
 /**
@@ -32,5 +34,8 @@ connectDB();
 app.get('/', (req, res) => {
     res.send('hello');
 });
+
+// swagger Docs Endpoint
+app.use('/docs', swaggerUi.serve , swaggerUi.setup(swaggerSpec))
 
 app.listen(PORT, () => console.log(`Server started at http://localhost:${PORT}`));

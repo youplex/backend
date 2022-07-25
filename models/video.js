@@ -14,6 +14,7 @@
   * @property {string} videoId videoId of the video on platform
   * @property {string} thumbnail thumbnail of video
   * @property {number} order order of video in the playlist
+  * @property {string} inPlaylist Id of the playlist in which the video is present
   * @property {string} [platform="youtube"] platform on which the video is present 
   */
  
@@ -37,11 +38,11 @@
         type: Number,
         requiredL: true
     },
-    // createdBy: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    //     required: true
-    // },
+    inPlaylist: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Playlist",
+        required: true
+    },
     thumbnail: {
         type: String,
     },

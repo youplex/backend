@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"doc": "jsdoc -c conf.json",
+		"doc": "jsdoc -c conf.json -r README.md",
 		"start": "node index.js",
 		"dev": "nodemon index.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -17,7 +17,10 @@
 		"dotenv": "^16.0.1",
 		"express": "^4.18.1",
 		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^6.4.6"
+		"mongoose": "^6.4.6",
+		"openapi-types": "^12.0.0",
+		"swagger-jsdoc": "^6.2.1",
+		"swagger-ui-express": "^4.5.0"
 	},
 	"devDependencies": {
 		"jsdoc": "^3.6.11",
