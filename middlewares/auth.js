@@ -5,15 +5,15 @@
  * 
  */
 
-import  jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 /**
- * @constant {number} REFRESH_TOKEN_EXPIRY specifies the validity of a refresh token in seconds
+ * @constant {number} - specifies the validity of a refresh token in seconds
  */
 export const REFRESH_TOKEN_EXPIRY = 30 * 24 * 60 * 60; // 30days
 
 /**
- * @constant {number} JWT_TOKEN_EXPIRY specifies the validity of a token in minutes
+ * @constant {number} - specifies the validity of a token in minutes
  */
 export const ACCESS_TOKEN_EXPIRY = 15 * 60; // 15 minutes
 
@@ -28,7 +28,7 @@ export const ACCESS_TOKEN_EXPIRY = 15 * 60; // 15 minutes
  */
 
 /**
- * @constant {COOKIE_OPTIONS_TYPE} COOKIE_OPTIONS specifies the cookie options that will be used
+ * @constant {COOKIE_OPTIONS_TYPE} - specifies the cookie options that will be used
  */
 export const COOKIE_OPTIONS = {
     httpOnly: true,
@@ -72,6 +72,7 @@ export const getRefreshToken = ( id ) => {
  * @param {Object} res response  
  * @param {callback} next  express middleware
  * @returns {callback} if successful moves to next middleware
+ * 
  */
 export const requireAuth = async (req, res, next) => {
     const token = req.headers["x-auth-token"];

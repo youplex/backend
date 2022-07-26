@@ -24,6 +24,8 @@ const router = Router();
  *               type: array
  *               items:
  *                 type: object
+ *       
+ *              
  */
 router.get('/playlist/', async () => {
 
@@ -203,6 +205,12 @@ router.put('/playlist/:id', async () => {
  *        - in: path
  *          name: playlistId
  *          description: playlist id
+ *          required: true
+ *          schema:
+ *            type: string
+ *        - in: path
+ *          name: videoId
+ *          description: video id
  *          required: true
  *          schema:
  *            type: string

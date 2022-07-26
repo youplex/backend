@@ -6,9 +6,11 @@
 import express from "express";
 import cors from 'cors';
 import dotenv from 'dotenv';
+import morgan from "morgan";
 import connectDB from './middlewares/connectDB.js';
 import { swaggerSpec } from './middlewares/swagger.js';
 import swaggerUi from 'swagger-ui-express';
+import apiRouter from './routes/api.js';
 dotenv.config();
 
 /**
@@ -26,14 +28,18 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+
+app.use(morgan("dev"));
 app.use(cors({ origin: whitelist, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 app.get('/', (req, res) => {
-    res.send('hello');
+    res.send('hello from playlist backend');
 });
+
+app.use('/api', apiRouter);
 
 // swagger Docs Endpoint
 app.use('/docs', swaggerUi.serve , swaggerUi.setup(swaggerSpec))
