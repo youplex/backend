@@ -7,6 +7,7 @@ import express from "express";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from "morgan";
+import cookieParser from 'cookie-parser';
 import connectDB from './middlewares/connectDB.js';
 import { swaggerSpec } from './middlewares/swagger.js';
 import swaggerUi from 'swagger-ui-express';
@@ -23,8 +24,7 @@ const PORT = process.env.PORT || 5000;
  */
  const whitelist = process.env.WHITELISTED_DOMAINS
  ? process.env.WHITELISTED_DOMAINS.split(',')
- : []
-
+ : [];
 
 const app = express();
 
@@ -33,6 +33,7 @@ app.use(morgan("dev"));
 app.use(cors({ origin: whitelist, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 connectDB();
 
 app.get('/', (req, res) => {
