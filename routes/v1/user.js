@@ -7,15 +7,19 @@
 
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/auth.js';
+import validate from '../../middlewares/validator.js';
 import User from '../../models/user.js';
+import { userPutSchema } from '../../models/validationSchema.js';
 
 const router = Router();
 
-router.get('/', /* requireAuth, */async (req, res) => {
-    const { email = 'taychaudhary1158@gmail.com' } = req.user || {};
+router.get('/', requireAuth, async (req, res) => {
+    const { email = '' } = req.user || {};
     try {
         // get user details after removing sensitive data
-        const user = await User.findOne({ email }).select('-refreshTokens -googleToken');
+        const user = await User.findOne({ email }).select('_id name email image calendarAccess');
+         // check if user exists
+        if(!user) return res.status(400).json({message: "No User Found"});
         res.json(user);
     } catch (error) {
         console.log(error);
@@ -24,15 +28,16 @@ router.get('/', /* requireAuth, */async (req, res) => {
 });
 
 
-router.put('/', /* requireAuth, */ async (req, res) => {
-    const { email = 'taychaudhary1158@gmail.com' } = req.user || {};
+router.put('/', requireAuth, validate(userPutSchema), async (req, res) => {
+    const { email = '' } = req.user || {};
     const { name, image } = req.body;
    try {
         const user = await User.findOneAndUpdate(
             { email },
             { $set: { name, image } }, { new: true } )
-            .select('-refreshTokens -googleToken');
-            
+        .select('_id name email image calendarAccess');
+        // check if user exists
+        if(!user) return res.status(400).json({message: "No User Found"});   
         res.json(user);
    } catch (error) {
         console.log(error);

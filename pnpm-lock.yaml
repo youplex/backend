@@ -5,6 +5,7 @@ specifiers:
   cors: ^2.8.5
   dotenv: ^16.0.1
   express: ^4.18.1
+  express-validator: ^6.14.2
   googleapis: ^105.0.0
   jsdoc: ^3.6.11
   jsonwebtoken: ^8.5.1
@@ -20,6 +21,7 @@ dependencies:
   cors: 2.8.5
   dotenv: 16.0.1
   express: 4.18.1
+  express-validator: 6.14.2
   googleapis: 105.0.0
   jsonwebtoken: 8.5.1
   mongoose: 6.4.6
@@ -448,6 +450,14 @@ packages:
   /event-target-shim/5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
     engines: {node: '>=6'}
+    dev: false
+
+  /express-validator/6.14.2:
+    resolution: {integrity: sha512-8XfAUrQ6Y7dIIuy9KcUPCfG/uCbvREctrxf5EeeME+ulanJ4iiW71lWmm9r4YcKKYOCBMan0WpVg7FtHu4Z4Wg==}
+    engines: {node: '>= 8.0.0'}
+    dependencies:
+      lodash: 4.17.21
+      validator: 13.7.0
     dev: false
 
   /express/4.18.1:
@@ -924,7 +934,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /lru-cache/6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}

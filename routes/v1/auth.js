@@ -9,7 +9,9 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import { COOKIE_OPTIONS, getAccessToken, getRefreshToken, requireAuth } from '../../middlewares/auth.js';
+import validate from '../../middlewares/validator.js';
 import User from '../../models/user.js';
+import { loginSchema } from '../../models/validationSchema.js';
 import getOAuthClient from '../../utils/google.js';
 
 /**
@@ -79,7 +81,7 @@ const router = Router();
  * @param {string} path - Express path 
  * @param {Object} middleware - Express Middleware
  */
-router.post('/login', async (req, res) => {
+router.post('/login', validate(loginSchema), async (req, res) => {
     const { code = '' } = req.body;
     try {
         const OAuthClient = getOAuthClient();
