@@ -112,7 +112,7 @@ router.post('/login', validate(loginSchema), async (req, res) => {
                 user.calendarAccess = isCalendarGranted;
             }
 
-            await user.save()
+            await user.save();
             return res.json({ status: 'ok',  token: jwtToken, email: user.email });
         }
 

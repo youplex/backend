@@ -15,6 +15,7 @@
   * @property {string} createdBy userId of the user who created the playlist
   * @property {string} thumbnail thumbnail of playlist
   * @property {string} [platform="youtube"] platform on which the playlist is present 
+  * @property {number} totalVideos total number of videos present in playlist 
   */
  
  
@@ -40,6 +41,10 @@
     },
     thumbnail: {
         type: String,
+    },
+    totalVideos: {
+        type: Number,
+        default: 0
     },
     platform: {
         type:String,
