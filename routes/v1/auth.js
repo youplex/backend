@@ -130,9 +130,15 @@ router.post('/login', validate(loginSchema), async (req, res) => {
             refreshTokens: [{ refreshToken }],
             googleToken: googleToken,
             calendarAccess: isCalendarGranted
-        }).select('_id name email image calendarAccess');
-
-        res.status(201).send({ new: true, token: jwtToken, user : newUser });
+        });;
+        const userData = { 
+            _id: newUser._id, 
+            name: newUser.name, 
+            email: newUser.email, 
+            image: newUser.image,
+            calendarAccess: newUser.calendarAccess
+        }
+        res.status(201).send({ new: true, token: jwtToken, user : userData });
     } catch (error) {
         console.log(error);
         res.status(500).json(error);  

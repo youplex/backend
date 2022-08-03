@@ -45,6 +45,9 @@ Implemented Routes
     3. create playlist (post) - http://localhost:5000/api/v1/playlist/create
     4. get videos in a playlist - http://localhost:5000/api/v1/playlist/videos?id=abcd1234
 
+3. User
+    1. get user data - http://localhost:5000/api/v1/user/
+    2. update user data (put) - http://localhost:5000/api/v1/user/
 
 
 
