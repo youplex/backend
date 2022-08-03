@@ -113,7 +113,14 @@ router.post('/login', validate(loginSchema), async (req, res) => {
             }
 
             await user.save();
-            return res.json({ status: 'ok',  token: jwtToken, email: user.email });
+            const userData = { 
+                _id: user._id, 
+                name: user.name, 
+                email: user.email, 
+                image: user.image,
+                calendarAccess: user.calendarAccess
+            }
+            return res.json({ token: jwtToken, user : userData });
         }
 
         const newUser = await User.create({
@@ -123,9 +130,9 @@ router.post('/login', validate(loginSchema), async (req, res) => {
             refreshTokens: [{ refreshToken }],
             googleToken: googleToken,
             calendarAccess: isCalendarGranted
-        });
+        }).select('_id name email image calendarAccess');
 
-        res.status(201).send({ new: true, token: jwtToken, email: newUser.email });
+        res.status(201).send({ new: true, token: jwtToken, user : newUser });
     } catch (error) {
         console.log(error);
         res.status(500).json(error);  
