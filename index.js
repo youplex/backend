@@ -34,10 +34,14 @@ app.use(cors({ origin: whitelist, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
+// for jsdocs
+app.use('/jsdocs', express.static('./docs'));
 connectDB();
 
 app.get('/', (req, res) => {
-    res.send('hello from playlist backend');
+    res.send(`hello from playlist backend <br/>
+    <br/> <a href='/jsdocs'>View Backend Code Docs</a> <br/>
+    <br/> <a href='/docs'>View Swagger Docs</a>`);
 });
 
 app.use('/api', apiRouter);

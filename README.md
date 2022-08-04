@@ -1,5 +1,6 @@
-# Playlist Management Backend Docs
+# Youplex Backend Docs
 
+[Check Swagger Docs](../docs)
 Setting up backend server
 
 clone repo
@@ -34,20 +35,22 @@ npm run dev
 ----
 Implemented Routes
 
+### Base Url : http://localhost:5000/api/v1
+
 1. Auth (all method post)
-    1. login - http://localhost:5000/api/v1/auth/login
-    2. logout - http://localhost:5000/api/v1/auth/logout
-    3. refresh - http://localhost:5000/api/v1/auth/refresh
+    1. login - /auth/login
+    2. logout - /auth/logout
+    3. refresh - /auth/refresh
 
 2. Playlist
-    1. get playlist (all) - http://localhost:5000/api/v1/playlist
-    2. get playlist by id -  http://localhost:5000/api/v1/playlist?id=abcd1234
-    3. create playlist (post) - http://localhost:5000/api/v1/playlist/create
-    4. get videos in a playlist - http://localhost:5000/api/v1/playlist/videos?id=abcd1234
+    1. get playlist (all) - /playlist
+    2. get playlist by id -  /playlist?id=abcd1234
+    3. create playlist (post) - /playlist/create
+    4. get videos in a playlist - /playlist/videos?id=abcd1234
 
 3. User
-    1. get user data - http://localhost:5000/api/v1/user/
-    2. update user data (put) - http://localhost:5000/api/v1/user/
+    1. get user data - /user
+    2. update user data (put) - /user
 
 
 

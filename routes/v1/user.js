@@ -6,43 +6,92 @@
 */
 
 import { Router } from 'express';
+import { getUserDetails, updateUserDetails } from '../../controllers/userControllers.js';
 import { requireAuth } from '../../middlewares/auth.js';
 import validate from '../../middlewares/validator.js';
-import User from '../../models/user.js';
 import { userPutSchema } from '../../models/validationSchema.js';
 
 const router = Router();
 
-router.get('/', requireAuth, async (req, res) => {
-    const { email = '' } = req.user || {};
-    try {
-        // get user details after removing sensitive data
-        const user = await User.findOne({ email }).select('_id name email image calendarAccess');
-         // check if user exists
-        if(!user) return res.status(400).json({message: "No User Found"});
-        res.json(user);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json(error); 
-    }
-});
+/**
+* @swagger
+* 
+* /user/:
+*   get:
+*     summary: get user data 
+*     tags: [User]
+*     requestHeaders:
+*       required: true
+*     responses:
+*       200:
+*         description: data of user
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                     _id:
+*                       type: string
+*                     email:
+*                       type: string
+*                     name:
+*                       type: string
+*                     image:
+*                       type: string
+*                     calendarAccess:
+*                       type: boolean
+*       401:
+*         description: Invalid Token
+*       500:
+*         description: Internal Server Error                
+*      
+*/
+router.get('/', requireAuth, getUserDetails);
 
-
-router.put('/', requireAuth, validate(userPutSchema), async (req, res) => {
-    const { email = '' } = req.user || {};
-    const { name, image } = req.body;
-   try {
-        const user = await User.findOneAndUpdate(
-            { email },
-            { $set: { name, image } }, { new: true } )
-        .select('_id name email image calendarAccess');
-        // check if user exists
-        if(!user) return res.status(400).json({message: "No User Found"});   
-        res.json(user);
-   } catch (error) {
-        console.log(error);
-        res.status(500).json(error); 
-   } 
-});
+/**
+* @swagger
+* 
+* /user/:
+*   put:
+*     summary: update user data 
+*     tags: [User]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               name:
+*                 type: string
+*               image:
+*                 type: string
+*     requestHeaders:
+*       required: true
+*     responses:
+*       200:
+*         description: data of user
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                     _id:
+*                       type: string
+*                     email:
+*                       type: string
+*                     name:
+*                       type: string
+*                     image:
+*                       type: string
+*                     calendarAccess:
+*                       type: boolean
+*       401:
+*         description: Invalid Token
+*       500:
+*         description: Internal Server Error                
+*      
+*/
+router.put('/', requireAuth, validate(userPutSchema), updateUserDetails);
 
 export default router;
