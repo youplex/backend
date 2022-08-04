@@ -11,7 +11,7 @@
  import connectDB from './middlewares/connectDB.js';
  import { swaggerSpec } from './middlewares/swagger.js';
  import swaggerUi from 'swagger-ui-express';
- // import apiRouter from './routes/api.js';
+ import apiRouter from './routes/api.js';
  dotenv.config();
  
  /**
@@ -44,7 +44,7 @@
      <br/> <a href='/docs'>View Swagger Docs</a>`);
  });
  
- //app.use('/api', apiRouter);
+ app.use('/api', apiRouter);
  
  // swagger Docs Endpoint
  app.use('/docs', swaggerUi.serve , swaggerUi.setup(swaggerSpec))
