@@ -2,7 +2,9 @@ import { google } from 'googleapis';
 import User from '../models/user.js';
 import Playlist from '../models/playlist.js';
 import Video from '../models/video.js';
+import { getDataFromPlaylist, getDataFromVideos } from '../utils/youtube.js';
 const Youtube = google.youtube('v3');
+
 
 export const getPlaylistData = async (req, res) => {
     const { email = '' } = req.user || {};
@@ -21,6 +23,7 @@ export const getPlaylistData = async (req, res) => {
         res.status(500).json(error);  
     }
 };
+
 
 export const getVideosFromPlaylist = async (req, res) => {
     const { email = '' } = req.user || {};
@@ -91,5 +94,51 @@ export const createNewPlaylist = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json(error);  
+    }
+};
+
+
+export const updatePlaylist = async (req, res) => {
+    const { email = '' } = req.user || {};
+    const { id } = req.params;
+    const { title, description='' } = req.body;
+    try {
+        // check if user exists
+        const user = await User.findOne({ email });
+        if(!user) return res.status(401).json({message: "No User Found"});
+
+        const playlist = await Playlist.findOneAndUpdate(
+            { createdBy: user._id, _id: id }
+            , { $set: { title, description } }, { new: true });
+
+        if(!playlist) res.status(404).json({ message: "No Playlist Found"});
+
+        res.json(playlist);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+};
+
+
+export const deletePlaylist = async (req, res) => {
+    const { email = '' } = req.user || {};
+    const { id } = req.params;
+    try {
+        const user = await User.findOne({ email });
+        if(!user) return res.status(401).json({message: "No User Found"});
+
+        // check if user has created this playlist
+        const playlist = await Playlist.findOne({ createdBy: user._id, _id: id });
+        if(!playlist) res.status(404).json({ message: "No Playlist Found"});
+        
+        // delete videos present in playlist
+        await Video.deleteMany({ inPlaylist: playlist._id });
+        await playlist.deleteOne();
+
+        res.json({ success: true});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
     }
 };
