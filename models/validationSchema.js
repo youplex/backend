@@ -29,3 +29,8 @@ export const getVideosSchema = [
     query('id').trim().notEmpty()
     .withMessage('id is required')
 ]
+
+export const updatePlaylistSchema = [
+    body('title').trim().notEmpty()
+    .withMessage('title is required')
+]

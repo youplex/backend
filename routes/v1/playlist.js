@@ -8,8 +8,8 @@
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/auth.js';
 import validate from '../../middlewares/validator.js';
-import { getVideosSchema, playlistCreateSchema } from '../../models/validationSchema.js';
-import { createNewPlaylist, getPlaylistData, getVideosFromPlaylist } from '../../controllers/playlistController.js';
+import { getVideosSchema, playlistCreateSchema, updatePlaylistSchema } from '../../models/validationSchema.js';
+import { createNewPlaylist, deletePlaylist, getPlaylistData, getVideosFromPlaylist, updatePlaylist } from '../../controllers/playlistController.js';
 
 const router = Router();
 
@@ -228,9 +228,7 @@ router.put('/reorder', async () => {
  *         description: Internal server error
  *
  */
-router.put('/:id', async () => {
-
-})
+router.put('/:id', requireAuth, validate(updatePlaylistSchema), updatePlaylist);
 
 /**
  * @swagger
@@ -252,9 +250,7 @@ router.put('/:id', async () => {
  *          description: The playlist was not found
  *
  */
- router.delete('/:id', async () => {
-
-})
+ router.delete('/:id', requireAuth, deletePlaylist);
 
 
 /**
