@@ -45,8 +45,10 @@ Implemented Routes
 2. Playlist
     1. get playlist (all) - /playlist
     2. get playlist by id -  /playlist?id=abcd1234
-    3. create playlist (post) - /playlist/create
-    4. get videos in a playlist - /playlist/videos?id=abcd1234
+    3. update playlist - /playlist/abcd1234
+    4. create playlist (post) - /playlist/create
+    5. get videos in a playlist - /playlist/videos?id=abcd1234
+    6. delete playlist - /playlist/abcd1234
 
 3. User
     1. get user data - /user
