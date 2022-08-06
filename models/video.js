@@ -36,7 +36,7 @@
     },
     order: {
         type: Number,
-        requiredL: true
+        required: true
     },
     inPlaylist: {
         type: mongoose.Schema.Types.ObjectId,
