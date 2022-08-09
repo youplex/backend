@@ -30,7 +30,9 @@ export const loginUser = async (req, res) => {
         if(user){
             // add new refresh token for new device
             user.refreshTokens = [...user.refreshTokens, { refreshToken }];
-            
+            // cycle the google token
+            user.googleToken = googleToken;
+
             // update if calendar access has changed
             if(user.calendarAccess !== isCalendarGranted){
                 user.calendarAccess = isCalendarGranted;
