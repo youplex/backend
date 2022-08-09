@@ -89,6 +89,7 @@ const router = Router();
  */
 router.get('/', requireAuth, getPlaylistData);
 
+
 /**
  * @swagger
  * /playlist/videos?{id}:
@@ -129,6 +130,7 @@ router.get('/', requireAuth, getPlaylistData);
  */
 router.get('/videos', requireAuth, validate(getVideosSchema), getVideosFromPlaylist);
 
+
 /**
  * @swagger
  * /playlist/create:
@@ -159,6 +161,7 @@ router.get('/videos', requireAuth, validate(getVideosSchema), getVideosFromPlayl
  *         description: Internal server error
  */
 router.post('/create', requireAuth, validate(playlistCreateSchema), createNewPlaylist);
+
 
 /**
  * @swagger
@@ -192,8 +195,14 @@ router.post('/create', requireAuth, validate(playlistCreateSchema), createNewPla
  *         description: Internal server error
  *
  */
-router.put('/reorder', async () => {
-
+router.put('/reorder', async (req, res) => {
+    // !! - TODO
+    try{
+        res.send('Reorder videos');
+    }catch(error){
+        console.log(error);
+        res.status(500).json(error);
+    } 
 })
 
 /**
@@ -251,38 +260,6 @@ router.put('/:id', requireAuth, validate(updatePlaylistSchema), updatePlaylist);
  *
  */
 router.delete('/:id', requireAuth, deletePlaylist);
-
-
-/**
- * @swagger
- *  /playlist/{playlistId}/{videoId}:
- *    delete:
- *      summary: removes a video from playlist by id 
- *      tags: [Playlist]
- *      parameters:
- *        - in: path
- *          name: playlistId
- *          description: playlist id
- *          required: true
- *          schema:
- *            type: string
- *        - in: path
- *          name: videoId
- *          description: video id
- *          required: true
- *          schema:
- *            type: string
- *      responses:
- *        200:
- *          description: The video was deleted
- *        404:
- *          description: The video was not found
- *
- */
- router.delete('/:playlistId/:videoId', async () => {
-
-})
-
 
 
 

@@ -38,7 +38,9 @@
         required: true,
     },
     createdFor: {
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Video" 
+        //!! leave ref and try querying vid, playlist one by one
     }
  }, { timestamps: true });
  

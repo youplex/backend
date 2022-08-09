@@ -34,3 +34,16 @@ export const updatePlaylistSchema = [
     body('title').trim().notEmpty()
     .withMessage('title is required')
 ]
+
+export const createPlaylistSchema = [
+    body('summary').trim().notEmpty()
+    .withMessage('summary is required'),
+    body('description').trim().notEmpty()
+    .withMessage('description is required'),
+    body('start').trim().notEmpty()
+    .withMessage('start is required')
+    .isDate().withMessage('start should be a data'),
+    body('end').trim().notEmpty()
+    .withMessage('end is required')
+    .isDate().withMessage('end should be a data')
+]
