@@ -84,7 +84,7 @@ export const createNewPlaylist = async (req, res) => {
                 part: 'snippet', // contentDetails optional
                 maxResults: 50
             });
-            const v_data = getDataFromVideos(PLRes.data.items, { inPlaylist: newPlaylist._id });
+            const v_data = getDataFromVideos(VdRes.data.items, { inPlaylist: newPlaylist._id });
             videos.push(...v_data);
             nextPageToken = VdRes.data.nextPageToken;
         }
