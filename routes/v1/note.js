@@ -6,6 +6,11 @@
  */
 
 import { Router } from 'express';
+import { requireAuth } from '../../middlewares/auth.js';
+
+import User from '../../models/user.js';
+import Note from '../../models/note.js';
+import Video from '../../models/video.js';
 
 const router = Router();
 
@@ -25,35 +30,21 @@ const router = Router();
  *               items:
  *                 type: object
  */
-router.get('/notes/', async (req, res)  => {
-    
+router.get('/', requireAuth, async (req, res)  => {
+   const { email = '' } = req.user || {};
+   try {
+    // check if user exists
+    const user = await User.findOne({ email });
+    if(!user) return res.status(404).json({message: "No User Found"});
+
+    const notes = await Note.find({ createdBy: user._id }).sort({ createdAt: -1 });
+    res.json(notes);
+   } catch (error) {
+        console.log(error);
+        res.status(500).json(error); 
+   } 
 });
 
-/**
- * @swagger
- * /notes/{id}:
- *   get:
- *     summary: Returns note data by id 
- *     tags: [Note]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: playlist id 
- *     responses:
- *       200:
- *         description: note data
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *              
- */
-router.get('/notes/:id', async (req, res)  => {
-    
-});
 
 /**
  * @swagger
@@ -77,8 +68,53 @@ router.get('/notes/:id', async (req, res)  => {
  *               type: object
  *              
  */
-router.get('/notes/video/:videoId', async (req, res)  => {
-    
+ router.get('/video', requireAuth, async (req, res)  => {
+    const { email = '' } = req.user || {};
+    const { id = ''  } = req.query;
+    try{
+        const video = await Video.findById(id);
+        if(!video) return res.status(400).json({ message: "No such video exists"});
+
+        const notes = await Note.find({ createdFor: id }).sort({ timestamp: 1 });
+        res.json(notes);
+    }catch{
+        console.log(error);
+        res.status(500).json(error); 
+    }
+});
+
+
+/**
+ * @swagger
+ * /notes/{id}:
+ *   get:
+ *     summary: Returns note data by id 
+ *     tags: [Note]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: playlist id 
+ *     responses:
+ *       200:
+ *         description: note data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *              
+ */
+router.get('/:id', requireAuth, async (req, res)  => {
+    const { id } = req.params;
+    try{
+        const note = await Note.findById(id);
+        res.json(note);
+    }catch{
+        console.log(error);
+        res.status(500).json(error); 
+    }
 });
 
 
@@ -107,8 +143,29 @@ router.get('/notes/video/:videoId', async (req, res)  => {
  *       500:
  *         description: Internal server error
  */
- router.post('/notes/create', async () => {
+ router.post('/create', requireAuth, async (req, res) => {
+    const { email = '' } = req.user || {};
+    const { title, content = "", timestamp , noteFor } = req.body;
+    try{
+        // check if user exists
+        const user = await User.findOne({ email });
+        if(!user) return res.status(404).json({message: "No User Found"});
+        const note = {
+            title: title,
+            content: content,
+            timestamp: timestamp,
+            createdBy: user._id
+        };
+        if(noteFor){ // add only if exists
+            note.createdFor = noteFor;
+        }
+        const newNote = await Note.create(note);
 
+        res.json(newNote);
+    }catch(error){
+        console.log(error);
+        res.status(500).json(error);  
+    }
 });
 
 
@@ -144,8 +201,24 @@ router.get('/notes/video/:videoId', async (req, res)  => {
  *         description: Internal server error
  *
  */
- router.put('/note/:id', async () => {
+ router.put('/:id', requireAuth, async (req, res) => {
+    const { email = '' } = req.user || {};
+    const { id } = req.params;
+    const { title = '', content = '', timestamp } = req.body; 
+    try {
+         // check if user exists
+         const user = await User.findOne({ email });
+         if(!user) return res.status(401).json({message: "No User Found"});
 
+         const note = await Note.findByIdAndUpdate(
+            { createdBy: user._id, _id: id },
+            { $set: { title, content, timestamp }}, { new: true });
+
+        res.json(note);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);  
+    }
 })
 
 
@@ -169,8 +242,18 @@ router.get('/notes/video/:videoId', async (req, res)  => {
  *          description: The note was not found
  *
  */
- router.delete('/notes/:id', async () => {
+ router.delete('/:id', requireAuth, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const note = await Note.findById(id);
+        if(!note) res.status(400).json({ message: "No such note exists"});
 
+        await note.deleteOne();
+        res.jaon({ success: true});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);    
+    }
 })
 
 export default router;

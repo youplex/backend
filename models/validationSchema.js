@@ -27,7 +27,11 @@ export const playlistCreateSchema = [
 
 export const getVideosSchema = [
     query('id').trim().notEmpty()
-    .withMessage('id is required')
+    .withMessage('id is required'),
+    query('page').trim().default(1).isNumeric()
+    .withMessage('page should be a number'),
+    query('limit').trim().default(35).isNumeric()
+    .withMessage('limit should be a number')
 ]
 
 export const updatePlaylistSchema = [

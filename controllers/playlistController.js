@@ -27,13 +27,15 @@ export const getPlaylistData = async (req, res) => {
 
 export const getVideosFromPlaylist = async (req, res) => {
     const { email = '' } = req.user || {};
-    const { id } = req.query;
+    const { id, page = 1, limit = 25 } = req.query;
+   
     try {
         // todo check if the user is the creator of the playlist
         const playlist = await Playlist.findById(id);
         if(!playlist) return res.status(404).json({message: "No Playlist Found"});
 
-        const videos = await Video.find({ inPlaylist: playlist._id }).sort({ order: 1});
+        const videos = await Video.find({ inPlaylist: playlist._id })
+                            .sort({ order: 1}).skip((page - 1) * limit).limit(limit);
         res.json({ playlist, videos });
     } catch (error) {
         console.log(error);

@@ -128,7 +128,7 @@ router.get('/', requireAuth, getPlaylistData);
  *                           thumbnail:
  *                             type: string
  */
-router.get('/videos', requireAuth, validate(getVideosSchema), getVideosFromPlaylist);
+router.get('/videos',  requireAuth, validate(getVideosSchema),  getVideosFromPlaylist);
 
 
 /**

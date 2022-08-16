@@ -11,6 +11,7 @@
   * @typedef {Object} Note
   * @property {string} [type="invideo"] Type of note
   * @property {Object} content content of the note 
+  * @property {string} title title for the note 
   * @property {number} [timestamp] timestamp at which the note is created
   * @property {string} createdBy userId of the user who created the note
   * @property {string} [createdFor] mongoDB id of the document for which the note is created
@@ -26,8 +27,12 @@
         type: String,
         default: "invideo"
     },
+    title: {
+        type: String,
+    },
     content: {
-        type: Object
+        type: String,
+        default: ""
     },
     timestamp: {
         type: Number,
@@ -39,7 +44,7 @@
     },
     createdFor: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Video" 
+        // ref: "Video" 
         //!! leave ref and try querying vid, playlist one by one
     }
  }, { timestamps: true });
