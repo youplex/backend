@@ -7,7 +7,7 @@
 
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/auth.js';
-import { deleteVideo, getSingleVideo } from '../../controllers/videoControllers.js';
+import { deleteVideo, getSingleVideo, updateVideo } from '../../controllers/videoControllers.js';
 
 const router = Router();
 
@@ -43,6 +43,8 @@ const router = Router();
  *                        
  */
 router.get('/', getSingleVideo);
+
+router.put('/:id', requireAuth, updateVideo);
 
 /**
  * @swagger
