@@ -4,6 +4,7 @@ import userRoutes from './user.js';
 import playlistRoutes from './playlist.js';
 import videoRoutes from './video.js';
 import noteRoutes from './note.js';
+import eventRoutes from './event.js';
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use('/user', userRoutes);
 router.use('/playlist', playlistRoutes);
 router.use('/video', videoRoutes);
 router.use('/note', noteRoutes);
+router.use('/event', eventRoutes);
 
 
 export default router;
