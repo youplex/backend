@@ -41,7 +41,7 @@ export const updateVideo = async (req, res) => {
     
     await playlist.updateOne({ $inc: { completedVideos : (updatedVideo.completed ? 1 : -1) }});
 
-    res.json(updateVideo);
+    res.json(updatedVideo);
     } catch (error) {
         console.log(error);
         res.status(500).json(error);

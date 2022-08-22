@@ -15,7 +15,7 @@ export const REFRESH_TOKEN_EXPIRY = 30 * 24 * 60 * 60; // 30days
 /**
  * @constant {number} - specifies the validity of a token in minutes
  */
-export const ACCESS_TOKEN_EXPIRY = 15 * 60; // 15 minutes
+export const ACCESS_TOKEN_EXPIRY = 24 * 60 * 60; // 1 day
 
 /**
  * Cookie Options object

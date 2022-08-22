@@ -38,6 +38,10 @@
         type: Number,
         required: true
     },
+    completed: {
+        type: Boolean,
+        default: false,
+    },
     inPlaylist: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Playlist",
