@@ -249,7 +249,7 @@
          if(!note) res.status(400).json({ message: "No such note exists"});
  
          await note.deleteOne();
-         res.jaon({ success: true});
+         res.json({ success: true});
      } catch (error) {
          console.log(error);
          res.status(500).json(error);    
