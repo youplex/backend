@@ -42,10 +42,13 @@
         ref: "User",
         required: true,
     },
-    createdFor: {
+    inPlaylist: {
         type: mongoose.Schema.Types.ObjectId,
-        // ref: "Video" 
-        //!! leave ref and try querying vid, playlist one by one
+        ref: "Playlist" 
+    },
+    inVideo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Video" 
     }
  }, { timestamps: true });
  

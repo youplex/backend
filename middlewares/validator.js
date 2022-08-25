@@ -17,7 +17,8 @@ const validate = (schemas)  => {
       }
 
       const errors = result.array();
-      return  res.status(422).send(errors);
+      console.log(errors);
+      return  res.status(422).json(errors);
     };
 }
 

@@ -37,7 +37,10 @@ router.get('/', requireAuth, async (req, res)  => {
     const user = await User.findOne({ email });
     if(!user) return res.status(404).json({message: "No User Found"});
 
-    const notes = await Note.find({ createdBy: user._id }).sort({ createdAt: -1 });
+    const notes = await Note.find({ createdBy: user._id })
+    .sort({ createdAt: -1 }).populate('inPlaylist', '_id title')
+    .populate('inVideo', 'id title');
+
     res.json(notes);
    } catch (error) {
         console.log(error);
@@ -77,7 +80,7 @@ router.get('/', requireAuth, async (req, res)  => {
 
         const notes = await Note.find({ createdFor: id }).sort({ timestamp: 1 });
         res.json(notes);
-    }catch{
+    }catch(error){
         console.log(error);
         res.status(500).json(error); 
     }
@@ -111,7 +114,7 @@ router.get('/:id', requireAuth, async (req, res)  => {
     try{
         const note = await Note.findById(id);
         res.json(note);
-    }catch{
+    }catch(error){
         console.log(error);
         res.status(500).json(error); 
     }
@@ -145,7 +148,7 @@ router.get('/:id', requireAuth, async (req, res)  => {
  */
  router.post('/create', requireAuth, async (req, res) => {
     const { email = '' } = req.user || {};
-    const { title, content = "", timestamp , noteFor } = req.body;
+    const { title, content = "", timestamp , inPlaylist, inVideo } = req.body;
     try{
         // check if user exists
         const user = await User.findOne({ email });
@@ -154,11 +157,11 @@ router.get('/:id', requireAuth, async (req, res)  => {
             title: title,
             content: content,
             timestamp: timestamp,
-            createdBy: user._id
+            createdBy: user._id,
+            inPlaylist, 
+            inVideo
         };
-        if(noteFor){ // add only if exists
-            note.createdFor = noteFor;
-        }
+      
         const newNote = await Note.create(note);
 
         res.json(newNote);
@@ -201,12 +204,12 @@ router.get('/:id', requireAuth, async (req, res)  => {
  *         description: Internal server error
  *
  */
- router.put('/:id', requireAuth, async (req, res) => {
+ router.put('/:id',  requireAuth, async (req, res) => {
     const { email = '' } = req.user || {};
     const { id } = req.params;
     const { title = '', content = '', timestamp } = req.body; 
     try {
-         // check if user exists
+        //  check if user exists
          const user = await User.findOne({ email });
          if(!user) return res.status(401).json({message: "No User Found"});
 
@@ -249,7 +252,7 @@ router.get('/:id', requireAuth, async (req, res)  => {
         if(!note) res.status(400).json({ message: "No such note exists"});
 
         await note.deleteOne();
-        res.jaon({ success: true});
+        res.json({ success: true});
     } catch (error) {
         console.log(error);
         res.status(500).json(error);    
