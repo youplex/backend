@@ -249,7 +249,7 @@
      const { id } = req.params;
      try {
          const note = await Note.findById(id);
-         if(!note) res.status(400).json({ message: "No such note exists"});
+         if(!note) return res.status(400).json({ message: "No such note exists"});
  
          await note.deleteOne();
          res.json({ success: true});
