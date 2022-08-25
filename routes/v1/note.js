@@ -37,7 +37,10 @@
      const user = await User.findOne({ email });
      if(!user) return res.status(404).json({message: "No User Found"});
  
-     const notes = await Note.find({ createdBy: user._id }).sort({ createdAt: -1 });
+     const notes = await Note.find({ createdBy: user._id })
+     .sort({ createdAt: -1 }).populate('inPlaylist', '_id title')
+     .populate('inVideo', 'id title');
+
      res.json(notes);
     } catch (error) {
          console.log(error);
@@ -145,21 +148,21 @@
   */
   router.post('/create', requireAuth, async (req, res) => {
      const { email = '' } = req.user || {};
-     const { title, content = "", timestamp , noteFor } = req.body;
+    const { title, content = "", timestamp , inPlaylist, inVideo } = req.body;
      try{
          // check if user exists
          const user = await User.findOne({ email });
          if(!user) return res.status(404).json({message: "No User Found"});
          const note = {
-             title: title,
-             content: content,
-             timestamp: timestamp,
-             createdBy: user._id
-         };
-         if(noteFor){ // add only if exists
-             note.createdFor = noteFor;
-         }
-         const newNote = await Note.create(note);
+            title: title,
+            content: content,
+            timestamp: timestamp,
+            createdBy: user._id,
+            inPlaylist, 
+            inVideo
+        };
+      
+        const newNote = await Note.create(note);
  
          res.json(newNote);
      }catch(error){
