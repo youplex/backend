@@ -78,7 +78,7 @@
          const video = await Video.findById(id);
          if(!video) return res.status(400).json({ message: "No such video exists"});
  
-         const notes = await Note.find({ createdFor: id }).sort({ timestamp: 1 });
+         const notes = await Note.find({ inVideo : id }).sort({ timestamp: 1 });
          res.json(notes);
      }catch(error){
          console.log(error);
