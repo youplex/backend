@@ -30,7 +30,7 @@
      .withMessage('id is required'),
      query('page').trim().default(1).isNumeric()
      .withMessage('page should be a number'),
-     query('limit').trim().default(50).isNumeric()
+     query('limit').trim().default(25).isNumeric()
      .withMessage('limit should be a number')
  ]
  

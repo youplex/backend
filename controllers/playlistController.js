@@ -27,7 +27,7 @@ export const getPlaylistData = async (req, res) => {
 
 export const getVideosFromPlaylist = async (req, res) => {
     const { email = '' } = req.user || {};
-    const { id, page = 1, limit = 50 } = req.query;
+    const { id, page = 1, limit = 25 } = req.query;
    
     try {
         // todo check if the user is the creator of the playlist
