@@ -148,7 +148,7 @@
   */
   router.post('/create', requireAuth, async (req, res) => {
      const { email = '' } = req.user || {};
-    const { title, content = "", timestamp , inPlaylist, inVideo } = req.body;
+    const { title, content = "", timestamp , inPlaylist, inVideo, pageURL = '' } = req.body;
      try{
          // check if user exists
          const user = await User.findOne({ email });
@@ -159,7 +159,8 @@
             timestamp: timestamp,
             createdBy: user._id,
             inPlaylist, 
-            inVideo
+            inVideo,
+            pageURL
         };
       
         const newNote = await Note.create(note);

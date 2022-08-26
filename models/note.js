@@ -37,6 +37,9 @@
     timestamp: {
         type: Number,
     },
+    pageURL: {
+        type: String,
+    },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
