@@ -8,7 +8,7 @@ const Calendar = google.calendar('v3');
 
 export const createCalendarEvent = async (req, res) => {
     const { email = ''} = req.user || {};
-    const { summary = '', description = '', start = '', end = '' } = req.body;
+    const { summary = '', description = '', start = '', end = '', isRecurring = false, timeZone } = req.body;
     try {
         const user = await User.findOne({ email });
         if(!user) return res.status(401).json({message: "No User Found"});
@@ -16,7 +16,7 @@ export const createCalendarEvent = async (req, res) => {
         const OAuth2Client = getOAuthClient();
         OAuth2Client.setCredentials({ refresh_token: user.googleToken });
 
-        const response = await Calendar.events.insert({
+        let eventObj = {
             auth: OAuth2Client,
             calendarId: 'primary',
             requestBody: {
@@ -34,7 +34,16 @@ export const createCalendarEvent = async (req, res) => {
                 },
                 colorId: '6',
             }
-        })
+        }
+
+        if(isRecurring && timeZone)
+        {   
+            eventObj.requestBody.start.timeZone = timeZone;
+            eventObj.requestBody.end.timeZone = timeZone;
+            eventObj.requestBody.recurrence = ["RRULE:FREQ=DAILY;COUNT=7"];
+        }
+
+        const response = await Calendar.events.insert(eventObj);
         const { id } = response.data;
         const event = await Event.create({
             eventId: id,
